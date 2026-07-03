@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WireBlack — Next-gen banking for underserved communities</title>
+<meta name="description" content="WireBlack is a community-first neobank for freelancers, migrant workers, students, Gen Z and small businesses. Currently under development — building the default financial infrastructure for the borderless economy.">
+<link rel="icon" href="f1.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;600;700;800;900&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#201613;
+    --ink-soft:#5A4A45;
+    --paper:#FAF6EF;
+    --paper-alt:#F3ECDD;
+    --card:#FFFFFF;
+    --line:#E6DACA;
+    --umber:#6B4548;
+    --umber-dark:#452C2E;
+    --gold:#BD7F2B;
+    --gold-ink:#8A5D1F;
+    --gold-pale:#F5E6C6;
+    --teal:#2B4643;
+    --teal-pale:#E4ECE9;
+    --radius-s:6px;
+    --radius-m:14px;
+    --radius-l:26px;
+    --maxw:1180px;
+    --shadow:0 1px 2px rgba(32,22,19,.04), 0 12px 32px -18px rgba(32,22,19,.28);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Public Sans', -apple-system, sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block; max-width:100%;}
+  a{color:inherit;}
+  h1,h2,h3,h4{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800;
+    line-height:.98;
+    margin:0;
+    letter-spacing:.2px;
+  }
+  p{margin:0;}
+  ul{margin:0; padding:0; list-style:none;}
+  button{font-family:inherit;}
+
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+  }
+
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  section{position:relative;}
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  /* ---------- top bar ---------- */
+  .status-bar{
+    background:var(--umber-dark);
+    color:#F3E9DF;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:.05em;
+    text-align:center;
+    padding:9px 16px;
+  }
+  .status-bar b{color:var(--gold-pale); font-weight:600;}
+
+  /* ---------- nav ---------- */
+  header.nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(250,246,239,.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:14px 28px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+  }
+  .brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink);}
+  .brand-mark{width:30px; height:30px; flex:none;}
+  .brand-word{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-weight:800;
+    font-size:23px;
+    letter-spacing:.01em;
+    white-space:nowrap;
+  }
+  .brand-word span{color:var(--gold-ink);}
+
+  nav.links{display:flex; align-items:center; gap:28px;}
+  nav.links a{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    text-decoration:none;
+    color:var(--ink-soft);
+    transition:color .15s ease;
+  }
+  nav.links a:hover{color:var(--gold-ink);}
+  .nav-cta{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    background:var(--ink);
+    color:var(--paper)!important;
+    padding:9px 16px;
+    border-radius:100px;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  .nav-toggle{display:none; background:none; border:0; cursor:pointer; padding:4px;}
+  .nav-toggle span{display:block; width:22px; height:2px; background:var(--ink); margin:5px 0;}
+
+  /* ---------- badges / pills ---------- */
+  .pill{
+    display:inline-flex; align-items:center; gap:7px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; text-transform:uppercase; letter-spacing:.06em;
+    padding:7px 14px 7px 11px;
+    border-radius:100px;
+    border:1px solid var(--line);
+    background:var(--card);
+    color:var(--ink-soft);
+  }
+  .pill .dot{width:7px; height:7px; border-radius:50%; background:var(--gold); flex:none;}
+  .pill.gold{background:var(--gold-pale); border-color:#E6C888; color:var(--gold-ink);}
+  .pill.teal{background:var(--teal-pale); border-color:#C7D8D3; color:var(--teal);}
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    text-transform:uppercase;
+    letter-spacing:.14em;
+    color:var(--gold-ink);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:16px;
+  }
+  .eyebrow::before{content:""; width:26px; height:1px; background:var(--gold-ink);}
+
+  /* ---------- hero ---------- */
+  .hero{padding:76px 0 40px;}
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    gap:56px;
+    align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(40px, 5.4vw, 68px);
+    margin:18px 0 22px;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--gold-ink);
+  }
+  .hero-sub{
+    font-size:18px;
+    color:var(--ink-soft);
+    max-width:52ch;
+    margin-bottom:28px;
+  }
+  .hero-badges{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:32px;}
+  .hero-cta{display:flex; flex-wrap:wrap; gap:14px;}
+  .btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    padding:15px 24px;
+    border-radius:100px;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{background:var(--ink); color:var(--paper); box-shadow:0 10px 24px -12px rgba(32,22,19,.55);}
+  .btn-ghost{background:transparent; color:var(--ink); border-color:var(--ink);}
+
+  /* route diagram */
+  .route-card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius-l);
+    padding:22px 22px 18px;
+    box-shadow:var(--shadow);
+  }
+  .route-card .cap{
+    display:flex; justify-content:space-between; align-items:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--ink-soft);
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px solid var(--line);
+  }
+  .route-card .cap b{color:var(--ink); font-weight:600;}
+  .pulse-dot{animation:pulseDot 2.4s ease-in-out infinite;}
+  @keyframes pulseDot{0%,100%{opacity:1} 50%{opacity:.35}}
+  .route-line{stroke-dasharray:6 7; animation:dashMove 2.2s linear infinite;}
+  @keyframes dashMove{to{stroke-dashoffset:-52;}}
+  .coin-travel{animation:travel 5s ease-in-out infinite;}
+  @keyframes travel{
+    0%{ offset-distance:0%; opacity:0;}
+    6%{opacity:1;}
+    46%{ offset-distance:50%; opacity:1;}
+    50%{opacity:0;}
+    54%{ offset-distance:50%; opacity:0;}
+    60%{opacity:1;}
+    100%{ offset-distance:100%; opacity:1;}
+  }
+
+  /* ---------- generic section spacing ---------- */
+  .section{padding:88px 0;}
+  .section.tight{padding:64px 0;}
+  .section-head{max-width:680px; margin-bottom:44px;}
+  .section-head h2{font-size:clamp(30px,3.6vw,44px);}
+  .section-head p{color:var(--ink-soft); font-size:17px; margin-top:14px;}
+  .divider{height:1px; background:var(--line); border:0; margin:0;}
+
+  .alt-bg{background:var(--paper-alt);}
+
+  /* ---------- cards / grids ---------- */
+  .grid{display:grid; gap:20px;}
+  .g2{grid-template-columns:repeat(2,1fr);}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g4{grid-template-columns:repeat(4,1fr);}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius-m);
+    padding:26px;
+  }
+  .card .num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--gold-ink);
+    margin-bottom:10px;
+    display:block;
+  }
+  .card h3{
+    font-family:'Public Sans', sans-serif;
+    font-weight:700;
+    font-size:17.5px;
+    letter-spacing:0;
+    margin-bottom:8px;
+  }
+  .card p{color:var(--ink-soft); font-size:15px;}
+  .icon-badge{
+    width:42px; height:42px; border-radius:11px;
+    background:var(--teal-pale);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:16px;
+  }
+  .icon-badge svg{width:22px; height:22px;}
+
+  /* ---------- problem pain table ---------- */
+  .pain-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:28px;}
+  .pain-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden;
+  }
+  .pain-card h4{
+    font-family:'Public Sans',sans-serif; font-weight:700; font-size:15.5px;
+    padding:16px 18px; background:var(--umber); color:#fff;
+  }
+  .pain-card ul{padding:16px 18px; display:flex; flex-direction:column; gap:9px;}
+  .pain-card li{font-size:14px; color:var(--ink-soft); padding-left:16px; position:relative;}
+  .pain-card li::before{content:"—"; position:absolute; left:0; color:var(--gold-ink);}
+
+  /* ---------- mechanism cards ---------- */
+  .mech-card{display:flex; gap:18px; padding:22px 0; border-top:1px solid var(--line);}
+  .mech-card:last-child{border-bottom:1px solid var(--line);}
+  .mech-num{
+    font-family:'Big Shoulders Display', sans-serif;
+    font-size:34px; font-weight:800; color:var(--line-num, #E1D3BB);
+    width:52px; flex:none;
+  }
+  .mech-body h4{font-family:'Public Sans'; font-weight:700; font-size:16.5px; margin-bottom:6px;}
+  .mech-body p{color:var(--ink-soft); font-size:14.5px; max-width:56ch;}
+  .impact-tag{
+    display:inline-block; margin-top:10px;
+    font-family:'IBM Plex Mono'; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--gold-ink); background:var(--gold-pale); padding:4px 10px; border-radius:6px;
+  }
+
+  /* ---------- table ---------- */
+  .tbl-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius-m); background:var(--card);}
+  table{width:100%; border-collapse:collapse; min-width:640px;}
+  th,td{text-align:left; padding:16px 18px; font-size:14.5px; border-bottom:1px solid var(--line); vertical-align:top;}
+  thead th{
+    font-family:'IBM Plex Mono'; font-size:11.5px; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--ink-soft); background:var(--paper-alt);
+  }
+  tbody tr:last-child td{border-bottom:0;}
+  td.highlight{color:var(--umber-dark); font-weight:600;}
+  th.hl-col, td.hl-col{background:var(--gold-pale);}
+  .muted{color:#B7A48E;}
+
+  /* ---------- architecture stack ---------- */
+  .stack{display:flex; flex-direction:column; gap:8px;}
+  .stack-layer{
+    border-radius:12px; padding:14px 18px;
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:'IBM Plex Mono'; font-size:12.5px; text-transform:uppercase; letter-spacing:.04em;
+    color:#fff;
+  }
+  .stack-layer span.name{font-family:'Public Sans'; text-transform:none; font-weight:700; font-size:15px; letter-spacing:0;}
+
+  /* ---------- tabs ---------- */
+  .tabbar{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:32px;}
+  .tab-btn{
+    font-family:'IBM Plex Mono'; font-size:12.5px; text-transform:uppercase; letter-spacing:.05em;
+    padding:11px 18px; border-radius:100px; border:1px solid var(--line);
+    background:var(--card); color:var(--ink-soft); cursor:pointer;
+    transition:all .15s ease;
+  }
+  .tab-btn.active{background:var(--umber); border-color:var(--umber); color:#fff;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:grid;}
+
+  .prod-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius-m); padding:24px;
+  }
+  .prod-card .tag{
+    font-family:'IBM Plex Mono'; font-size:11px; text-transform:uppercase; letter-spacing:.05em;
+    color:var(--teal); background:var(--teal-pale); padding:4px 9px; border-radius:6px; display:inline-block; margin-bottom:14px;
+  }
+  .prod-card h4{font-family:'Public Sans'; font-weight:700; font-size:17px; margin-bottom:10px;}
+  .prod-card .lbl{font-family:'IBM Plex Mono'; font-size:11px; text-transform:uppercase; color:var(--gold-ink); letter-spacing:.05em; margin-top:12px; display:block;}
+  .prod-card p{color:var(--ink-soft); font-size:14.5px; margin-top:5px;}
+
+  /* ---------- wirescore diagram ---------- */
+  .score-wrap{display:grid; grid-template-columns:1fr auto 1fr; gap:20px; align-items:center;}
+  .score-inputs{display:flex; flex-direction:column; gap:10px;}
+  .score-input{
+    background:var(--card); border:1px solid var(--line); border-left:4px solid var(--gold);
+    padding:12px 16px; border-radius:8px; font-size:14px; font-weight:600;
+  }
+  .hexcore{
+    width:170px; height:170px; margin:0 auto;
+    display:flex; align-items:center; justify-content:center; position:relative;
+  }
+  .hexcore svg{position:absolute; inset:0; width:100%; height:100%;}
+  .hexcore .lbl{font-family:'Big Shoulders Display'; font-weight:800; font-size:19px; color:var(--umber-dark); text-align:center; position:relative; z-index:2;}
+  .score-output{background:var(--gold-pale); border:1px solid #E6C888; border-radius:12px; padding:18px 20px;}
+  .score-output p{font-size:14px; color:var(--umber-dark);}
+  .score-output b{color:var(--gold-ink);}
+
+  /* ---------- stat circles ---------- */
+  .stat-row{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  .stat-card{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius-l); padding:32px 26px; text-align:center;
+  }
+  .stat-card .ring{
+    width:96px; height:96px; border-radius:50%; margin:0 auto 18px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono'; font-weight:600; font-size:12px; letter-spacing:.02em;
+  }
+  .stat-card .big{font-family:'Big Shoulders Display'; font-size:34px; font-weight:800; margin-bottom:8px;}
+  .stat-card p{font-size:13.5px; color:var(--ink-soft);}
+
+  /* ---------- region cards ---------- */
+  .region-card{display:flex; gap:16px; align-items:flex-start; padding:20px 0; border-top:1px solid var(--line);}
+  .region-card:last-child{padding-bottom:0;}
+  .region-idx{font-family:'Big Shoulders Display'; font-size:26px; font-weight:800; color:var(--gold-ink); width:38px; flex:none;}
+  .region-body h4{font-family:'Public Sans'; font-weight:700; font-size:16px; margin-bottom:5px;}
+  .region-body p{color:var(--ink-soft); font-size:14px;}
+
+  /* ---------- pillars ---------- */
+  .pillars{display:flex; gap:14px; align-items:flex-end; margin:36px 0 8px; flex-wrap:wrap;}
+  .pillar{
+    flex:1; min-width:130px;
+    background:linear-gradient(180deg, var(--umber), var(--umber-dark));
+    color:#fff; border-radius:10px 10px 0 0;
+    padding:18px 14px; text-align:center;
+  }
+  .pillar h5{font-family:'Public Sans'; font-weight:700; font-size:14px; margin-bottom:6px;}
+  .pillar p{font-size:12px; color:#EBDCCF; line-height:1.4;}
+  .pillar-base{
+    background:var(--ink-soft); color:#fff; text-align:center; padding:14px; border-radius:8px;
+    font-family:'IBM Plex Mono'; font-size:12px; text-transform:uppercase; letter-spacing:.05em;
+  }
+
+  /* ---------- roadmap ---------- */
+  .roadmap{display:flex; flex-direction:column;}
+  .rm-row{
+    display:grid; grid-template-columns:120px 1fr 1fr; gap:18px;
+    padding:22px 0; border-top:1px solid var(--line); align-items:start;
+  }
+  .rm-row:last-child{border-bottom:1px solid var(--line);}
+  .rm-month{font-family:'Big Shoulders Display'; font-weight:800; font-size:22px;}
+  .rm-row.current .rm-month{color:var(--gold-ink);}
+  .rm-focus{font-weight:700; font-size:15px;}
+  .rm-milestone{color:var(--ink-soft); font-size:14px;}
+  .rm-badge{
+    display:inline-block; margin-top:8px; font-family:'IBM Plex Mono'; font-size:10.5px; text-transform:uppercase;
+    letter-spacing:.05em; color:var(--gold-ink); background:var(--gold-pale); padding:3px 9px; border-radius:5px;
+  }
+
+  /* ---------- team ---------- */
+  .team-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  .team-card{background:var(--card); border:1px solid var(--line); border-radius:var(--radius-m); padding:24px; text-align:left;}
+  .avatar{
+    width:56px; height:56px; border-radius:50%; background:var(--umber); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Big Shoulders Display'; font-weight:800; font-size:20px; margin-bottom:16px;
+    overflow:hidden;
+  }
+  .avatar img{width:100%; height:100%; border-radius:50%; object-fit:cover;}
+  .team-card h4{font-family:'Public Sans'; font-weight:700; font-size:16.5px; margin-bottom:3px;}
+  .team-card .role{font-family:'IBM Plex Mono'; font-size:11.5px; text-transform:uppercase; color:var(--gold-ink); letter-spacing:.04em; margin-bottom:12px; display:block;}
+  .team-card p{color:var(--ink-soft); font-size:13.5px;}
+
+  .open-role{
+    border:1.5px dashed #D8B77C; background:var(--gold-pale); border-radius:var(--radius-m); padding:24px;
+  }
+  .open-role .role{color:var(--gold-ink);}
+  .open-role h4{color:var(--umber-dark);}
+
+  /* ---------- founder cta ---------- */
+  .founder-cta{
+    background:var(--card); border:1px solid var(--line); border-radius:var(--radius-l);
+    padding:44px; display:grid; grid-template-columns:1.3fr 1fr; gap:36px; align-items:center;
+    box-shadow:var(--shadow);
+  }
+  .founder-cta h3{font-size:clamp(24px,3vw,32px); margin-bottom:14px;}
+  .founder-cta p{color:var(--ink-soft); font-size:15.5px;}
+  .founder-contact{background:var(--paper-alt); border-radius:14px; padding:22px;}
+  .founder-contact .who{font-weight:700; font-size:16px; margin-bottom:2px;}
+  .founder-contact .mail{font-family:'IBM Plex Mono'; font-size:14px; color:var(--gold-ink); word-break:break-all;}
+
+  /* ---------- tech stack ---------- */
+  .tech-row{display:flex; flex-wrap:wrap; gap:12px;}
+  .tech-chip{
+    font-family:'IBM Plex Mono'; font-size:13px; letter-spacing:.02em;
+    background:var(--card); border:1px solid var(--line); padding:10px 16px; border-radius:8px;
+  }
+
+  /* ---------- closing ---------- */
+  .closing{
+    background:var(--umber-dark);
+    color:#F5EBDF;
+    padding:100px 0 60px;
+  }
+  .closing h2{
+    font-size:clamp(34px,5vw,58px); color:#fff; max-width:14ch; margin-bottom:22px;
+  }
+  .closing p.lead{font-size:17px; color:#DCC9B8; max-width:52ch; margin-bottom:34px;}
+  .closing .btn-primary{background:var(--gold); color:var(--umber-dark);}
+  .closing .btn-ghost{border-color:#8A6E64; color:#F5EBDF;}
+  .closing-foot{
+    margin-top:70px; padding-top:24px; border-top:1px solid #5C4245;
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;
+    font-family:'IBM Plex Mono'; font-size:12px; letter-spacing:.04em; color:#B99C8C;
+  }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:980px){
+    .g3, .g4{grid-template-columns:repeat(2,1fr);}
+    .hero-grid{grid-template-columns:1fr;}
+    .pain-grid{grid-template-columns:1fr;}
+    .founder-cta{grid-template-columns:1fr;}
+    .score-wrap{grid-template-columns:1fr;}
+    .stat-row{grid-template-columns:1fr;}
+    .team-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:760px){
+    .wrap{padding:0 20px;}
+    nav.links{
+      position:fixed; inset:60px 0 0 0; background:var(--paper); flex-direction:column;
+      align-items:flex-start; padding:28px 24px; gap:22px; transform:translateX(100%);
+      transition:transform .25s ease; overflow-y:auto;
+    }
+    nav.links.open{transform:translateX(0);}
+    nav.links a{font-size:15px;}
+    .nav-toggle{display:block;}
+    .g2, .g3, .g4{grid-template-columns:1fr;}
+    .pillars{flex-direction:column;}
+    .pillar{border-radius:10px;}
+    .rm-row{grid-template-columns:1fr; gap:6px;}
+    .team-grid{grid-template-columns:1fr;}
+    .score-inputs{order:2;}
+  }
+</style>
+</head>
+<body>
+
+<div class="status-bar">
+  ● PRODUCT STAGE: <b>UNDER ACTIVE DEVELOPMENT</b> &nbsp;·&nbsp; We need a co-founder to complete the team&nbsp;·&nbsp; MVP TARGETED October 2026
+</div>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      
+      <img style="height: 50px; width: 200px;" src="logo-new.png" alt="WireBlack Logo">
+    </a>
+    <nav class="links" id="navLinks">
+      <a href="#problem">Problem</a>
+      <a href="#product">Solution</a>
+      <a href="#segments">Products</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#team">Team & Open Roles</a>
+      <a href="https://forms.gle/X4Qy6wqgwoLbwtXa9" class="nav-cta">Join us →</a>
+    </nav>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+       
+        <h1>Building the default financial infrastructure for the <em>borderless economy.</em></h1>
+        <p class="hero-sub">WireBlack is a fintech built for freelancers, migrant workers, students and small businesses — the earners traditional banks were never designed for. Same rails, different story for every community.</p>
+        <div class="hero-badges">
+          <span class="pill gold"><span class="dot"></span>Product stage — under development</span>
+          <span class="pill">Location: Dhaka, Bangladesh</span>
+          <span class="pill teal">Solo-founded, looking for a co-founder</span>
+        </div>
+        <div class="hero-cta">
+          <a href="mailto:badancoder@hotmail.com" class="btn btn-primary">Talk to the founder →</a>
+          <a href="#product" class="btn btn-ghost">See how it works</a>
+        </div>
+      </div>
+
+      <div class="route-card reveal">
+        <svg viewBox="0 0 460 300" width="100%">
+          <defs>
+            <path id="pathA" d="M75 205 C 140 150, 190 130, 235 100" fill="none"/>
+            <path id="pathB" d="M235 100 C 300 95, 340 150, 385 175" fill="none"/>
+          </defs>
+          <!-- soft base map dots -->
+          <g fill="#E9DFCC">
+            <circle cx="40" cy="90" r="2.2"/><circle cx="90" cy="60" r="2.2"/><circle cx="140" cy="40" r="2.2"/>
+            <circle cx="60" cy="150" r="2.2"/><circle cx="200" cy="240" r="2.2"/><circle cx="260" cy="250" r="2.2"/>
+            <circle cx="320" cy="230" r="2.2"/><circle cx="400" cy="90" r="2.2"/><circle cx="420" cy="140" r="2.2"/>
+            <circle cx="150" cy="200" r="2.2"/><circle cx="360" cy="60" r="2.2"/><circle cx="290" cy="40" r="2.2"/>
+          </g>
+          <!-- routes -->
+          <path d="M75 205 C 140 150, 190 130, 235 100" fill="none" stroke="#D9B979" stroke-width="2" class="route-line"/>
+          <path d="M235 100 C 300 95, 340 150, 385 175" fill="none" stroke="#D9B979" stroke-width="2" class="route-line"/>
+          <!-- traveling coin -->
+          <circle r="5" fill="var(--gold)" style="offset-path:path('M75 205 C 140 150, 190 130, 235 100 C 300 95, 340 150, 385 175');" class="coin-travel"/>
+          <!-- nodes -->
+          <g>
+            <circle cx="75" cy="205" r="8" fill="var(--teal)" class="pulse-dot"/>
+            <circle cx="235" cy="100" r="9" fill="var(--umber)" class="pulse-dot" style="animation-delay:.6s"/>
+            <circle cx="385" cy="175" r="8" fill="var(--gold)" class="pulse-dot" style="animation-delay:1.2s"/>
+          </g>
+          <g font-family="IBM Plex Mono" font-size="11" fill="#5A4A45">
+            <text x="30" y="230">Freelancers & Immigrants</text>
+            <text x="192" y="88">Students and Gen Z</text>
+            <text x="335" y="200">Online Businesses</text>
+          </g>
+        </svg>
+        <div class="cap">
+          <span>Community-first neobanking</span>
+          <b>Customised Financial Products</b>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STATUS / HONESTY BAND ============ -->
+  <section class="section tight reveal">
+    <div class="wrap">
+      <div class="card" style="padding:36px 40px; display:grid; grid-template-columns:1.1fr .9fr; gap:36px; align-items:center;">
+        <div>
+          <h3 style="font-family:'Public Sans'; font-weight:700; font-size:20px; margin-bottom:10px;">Our product is not yet developed</h3>
+          <p style="color:var(--ink-soft); font-size:15px;">WireBlack is being built in-house, one founder and a small team, in public view. We have already made significant progress. and we can build the complete product. without external help. What follows is the real architecture, research and roadmap behind the build, shared here so a technical or financial co-founder can evaluate it honestly.</p>
+          <br>
+          <a href="https://drive.google.com/drive/folders/16-PWq6n_ph74h_1dHUAQjmwZHeF8C7FI" class="btn btn-ghost">See current prototype screenshots</a>
+        </div>
+        <div>
+          <div class="mono" style="font-size:11.5px; color:var(--ink-soft); margin-bottom:10px;">6-MONTH BUILD CYCLE — JUL–DEC 2026</div>
+          <div style="display:flex; gap:6px;">
+            <div style="flex:1; height:8px; border-radius:4px; background:var(--gold);"></div>
+            <div style="flex:1; height:8px; border-radius:4px; background:var(--line);"></div>
+            <div style="flex:1; height:8px; border-radius:4px; background:var(--line);"></div>
+            <div style="flex:1; height:8px; border-radius:4px; background:var(--line);"></div>
+            <div style="flex:1; height:8px; border-radius:4px; background:var(--line);"></div>
+            <div style="flex:1; height:8px; border-radius:4px; background:var(--line);"></div>
+          </div>
+          <div style="display:flex; justify-content:space-between; margin-top:6px; font-family:'IBM Plex Mono'; font-size:10.5px; color:var(--ink-soft);">
+            <span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PROBLEM ============ -->
+  <section class="section alt-bg" id="problem">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">The problem</div>
+        <h2>Banking was built for predictable salaries. Today's earners don't work that way.</h2>
+        <p>Traditional institutions were designed around physical branches and standardized paychecks. The modern economy runs on freelancers, creators, migrant workers, students and digital entrepreneurs — and financial institutions still operate on outdated assumptions.</p>
+      </div>
+
+      <div class="grid g4 reveal">
+        <div class="card">
+          <span class="num">01</span>
+          <h3>Outdated banking systems</h3>
+          <p>Generic banking and insurance products for every kind of community and occupation, with no distinction between them.</p>
+        </div>
+        <div class="card">
+          <span class="num">02</span>
+          <h3>Fragmented services</h3>
+          <p>Customers can't access the full range of financial services in one place, and digital experiences remain poor.</p>
+        </div>
+        <div class="card">
+          <span class="num">03</span>
+          <h3>Slow onboarding</h3>
+          <p>Rigid underwriting systems and little to no personalization slow customers down at the exact moment they need speed.</p>
+        </div>
+        <div class="card">
+          <span class="num">04</span>
+          <h3>Exclusion by default</h3>
+          <p>High remittance fees and no access to formal credit scoring shut out anyone without a traditional income record.</p>
+        </div>
+      </div>
+
+      <div class="pain-grid reveal">
+        <div class="pain-card">
+          <h4>Freelancers &amp; migrant workers</h4>
+          <ul>
+            <li>Irregular income and currency conversion issues</li>
+            <li>No formal credit history</li>
+            <li>Difficulty accessing loans or credit</li>
+            <li>Missing corporate benefits and safety nets</li>
+          </ul>
+        </div>
+        <div class="pain-card">
+          <h4>Students &amp; Gen Z</h4>
+          <ul>
+            <li>Low engagement with slow, branch-reliant banking</li>
+            <li>Poor savings habits, complex documentation</li>
+            <li>Limited credit access with no formal history</li>
+            <li>No access to multi-currency cards</li>
+          </ul>
+        </div>
+        <div class="pain-card">
+          <h4>Online businesses</h4>
+          <ul>
+            <li>Slow digital transformation, manual processes</li>
+            <li>Limited access to short-term financing</li>
+            <li>High collateral requirements</li>
+            <li>Cash-flow instability and inventory risk</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY CURRENT SOLUTIONS FAIL ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Why current solutions fail</div>
+        <h2>Neobanks digitized the branch. They didn't rethink who banking is for.</h2>
+      </div>
+
+      <div class="reveal">
+        <div class="mech-card">
+          <div class="mech-num">1</div>
+          <div class="mech-body">
+            <h4>Banking isn't behavior-driven</h4>
+            <p>Banks rarely consider real financial behavior — spending patterns, cash-flow consistency or digital reputation — when deciding who to serve.</p>
+            <span class="impact-tag">Impact: personalized guidance is almost nonexistent</span>
+          </div>
+          <div class="mech-body 2">
+            <svg viewBox="0 0 140 100" style="width:100%; max-width:180px; margin-top:8px;">
+              <!-- Spending pattern signal -->
+              <g opacity="0.6">
+                <path d="M 15 50 L 28 38 L 40 48 L 52 32 L 65 42" stroke="#BD7F2B" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <circle cx="15" cy="50" r="3" fill="#BD7F2B"/>
+                <circle cx="28" cy="38" r="3" fill="#BD7F2B"/>
+                <circle cx="40" cy="48" r="3" fill="#BD7F2B"/>
+                <circle cx="52" cy="32" r="3" fill="#BD7F2B"/>
+                <circle cx="65" cy="42" r="3" fill="#BD7F2B"/>
+                <text x="73" y="45" font-size="10" fill="#BD7F2B" font-family="IBM Plex Mono" dominant-baseline="middle">Behavior</text>
+              </g>
+              <!-- Ignored arrow -->
+              <line x1="80" y1="44" x2="98" y2="44" stroke="#6B4548" stroke-width="2" stroke-dasharray="4,2" opacity="0.4"/>
+              <!-- Banking decision (blank/indifferent box) -->
+              <rect x="105" y="28" width="28" height="32" fill="none" stroke="#6B4548" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.4" rx="2"/>
+              <text x="119" y="65" font-size="9" fill="#6B4548" text-anchor="middle" dominant-baseline="middle" opacity="0.5">Decision</text>
+            </svg>
+          </div>
+        </div>
+        <div class="mech-card">
+          <div class="mech-num">2</div>
+          <div class="mech-body">
+            <h4>One-size-fits-all products</h4>
+            <p>A university student, a freelance designer, a migrant worker and a small business owner receive nearly identical products despite completely different needs.</p>
+            <span class="impact-tag">Impact: low relevance, poor engagement</span>
+          </div>
+          <div class="mech-body 2">
+            <svg viewBox="0 0 175 105" style="width:100%; max-width:200px; margin-top:8px;">
+              <!-- Different personas -->
+              <g>
+                <!-- Student -->
+                <circle cx="18" cy="18" r="6" fill="#BD7F2B" opacity="0.7"/>
+                <path d="M 12 28 L 24 28 L 24 38 L 12 38 Z" fill="#BD7F2B" opacity="0.7"/>
+                <text x="18" y="58" font-size="9" fill="#6B4548" text-anchor="middle" dominant-baseline="middle">Student</text>
+              </g>
+              <g>
+                <!-- Designer -->
+                <circle cx="58" cy="18" r="6" fill="#2B4643" opacity="0.7"/>
+                <path d="M 52 28 L 64 28 L 64 38 L 52 38 Z" fill="#2B4643" opacity="0.7"/>
+                <text x="58" y="58" font-size="9" fill="#6B4548" text-anchor="middle" dominant-baseline="middle">Designer</text>
+              </g>
+              <g>
+                <!-- Migrant -->
+                <circle cx="98" cy="18" r="6" fill="#8A5D1F" opacity="0.7"/>
+                <path d="M 92 28 L 104 28 L 104 38 L 92 38 Z" fill="#8A5D1F" opacity="0.7"/>
+                <text x="98" y="58" font-size="9" fill="#6B4548" text-anchor="middle" dominant-baseline="middle">Migrant</text>
+              </g>
+              <g>
+                <!-- Business owner -->
+                <circle cx="138" cy="18" r="6" fill="#BD7F2B" opacity="0.5"/>
+                <path d="M 132 28 L 144 28 L 144 38 L 132 38 Z" fill="#BD7F2B" opacity="0.5"/>
+                <text x="138" y="58" font-size="9" fill="#6B4548" text-anchor="middle" dominant-baseline="middle">Business</text>
+              </g>
+              <!-- Arrows pointing down -->
+              <line x1="18" y1="40" x2="18" y2="62" stroke="#E1D3BB" stroke-width="2"/>
+              <line x1="58" y1="40" x2="58" y2="62" stroke="#E1D3BB" stroke-width="2"/>
+              <line x1="98" y1="40" x2="98" y2="62" stroke="#E1D3BB" stroke-width="2"/>
+              <line x1="138" y1="40" x2="138" y2="62" stroke="#E1D3BB" stroke-width="2"/>
+              <!-- Same product boxes below -->
+              <rect x="8" y="65" width="20" height="16" fill="none" stroke="#BD7F2B" stroke-width="1.5" rx="3"/>
+              <rect x="48" y="65" width="20" height="16" fill="none" stroke="#BD7F2B" stroke-width="1.5" rx="3"/>
+              <rect x="88" y="65" width="20" height="16" fill="none" stroke="#BD7F2B" stroke-width="1.5" rx="3"/>
+              <rect x="128" y="65" width="20" height="16" fill="none" stroke="#BD7F2B" stroke-width="1.5" rx="3"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mech-card">
+          <div class="mech-num">3</div>
+          <div class="mech-body">
+            <h4>Documentation creates exclusion</h4>
+            <p>Many digital workers and underserved communities can't meet paperwork, formal employment or collateral requirements — even with stable income.</p>
+            <span class="impact-tag">Impact: millions remain excluded from formal finance</span>
+          </div>
+          <div class="mech-body 2">
+            <svg viewBox="0 0 160 105" style="width:100%; max-width:180px; margin-top:8px;">
+              <!-- Person/User on left -->
+              <circle cx="20" cy="25" r="8" fill="#2B4643" opacity="0.8"/>
+              <path d="M 12 38 L 28 38 L 28 52 L 12 52 Z" fill="#2B4643" opacity="0.8"/>
+              <text x="20" y="72" font-size="10" fill="#6B4548" text-anchor="middle" font-weight="600" dominant-baseline="middle">Worker</text>
+              <!-- Barrier documents -->
+              <g opacity="0.9">
+                <!-- Document 1 -->
+                <rect x="50" y="12" width="16" height="24" fill="#F5E6C6" stroke="#BD7F2B" stroke-width="1.5" rx="2"/>
+                <line x1="54" y1="17" x2="62" y2="17" stroke="#BD7F2B" stroke-width="0.8"/>
+                <line x1="54" y1="22" x2="62" y2="22" stroke="#BD7F2B" stroke-width="0.8"/>
+                <line x1="54" y1="27" x2="62" y2="27" stroke="#BD7F2B" stroke-width="0.8"/>
+                <!-- Document 2 -->
+                <rect x="72" y="6" width="16" height="24" fill="#F5E6C6" stroke="#BD7F2B" stroke-width="1.5" rx="2"/>
+                <line x1="76" y1="11" x2="84" y2="11" stroke="#BD7F2B" stroke-width="0.8"/>
+                <line x1="76" y1="16" x2="84" y2="16" stroke="#BD7F2B" stroke-width="0.8"/>
+                <line x1="76" y1="21" x2="84" y2="21" stroke="#BD7F2B" stroke-width="0.8"/>
+                <!-- Document 3 -->
+                <rect x="94" y="18" width="16" height="24" fill="#F5E6C6" stroke="#BD7F2B" stroke-width="1.5" rx="2"/>
+                <line x1="98" y1="23" x2="106" y2="23" stroke="#BD7F2B" stroke-width="0.8"/>
+                <line x1="98" y1="28" x2="106" y2="28" stroke="#BD7F2B" stroke-width="0.8"/>
+                <line x1="98" y1="33" x2="106" y2="33" stroke="#BD7F2B" stroke-width="0.8"/>
+              </g>
+              <!-- X mark (exclusion) -->
+              <circle cx="130" cy="32" r="13" fill="none" stroke="#6B4548" stroke-width="2" opacity="0.6"/>
+              <line x1="122" y1="24" x2="138" y2="40" stroke="#6B4548" stroke-width="2" opacity="0.6" stroke-linecap="round"/>
+              <line x1="138" y1="24" x2="122" y2="40" stroke="#6B4548" stroke-width="2" opacity="0.6" stroke-linecap="round"/>
+              <text x="130" y="72" font-size="10" fill="#6B4548" text-anchor="middle" font-weight="600" dominant-baseline="middle">Blocked</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMMUNITY BANKING MODEL ============ -->
+  <section class="section alt-bg" id="product">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">The WireBlack way</div>
+        <h2>Same underlying rails. A different financial story for every community.</h2>
+        <p>Instead of one generic account for everyone, WireBlack repurposes the same core banking engine into segment-specific products — same code, different story.</p>
+      </div>
+
+      <div class="tbl-wrap reveal">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Generic neobanks</th>
+              <th class="hl-col">WireBlack — Freelancers</th>
+              <th class="hl-col">WireBlack — Immigrant workers</th>
+              <th class="hl-col">WireBlack — Students &amp; Gen Z</th>
+              <th class="hl-col">WireBlack — Online Businesses &amp; SMEs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="highlight">Core accounts</td>
+              <td class="muted">Zero-balance accounts</td>
+              <td class="hl-col">USD earnings conversion lock</td>
+              <td>Local family withdrawal systems</td>
+              <td>Vibe wallets &amp; gamified dashboards</td>
+              <td>Financial Risk Protection</td>
+            </tr>
+            <tr>
+              <td class="highlight">Credit / lending</td>
+              <td class="muted">Rigid personal loans</td>
+              <td class="hl-col">Invoice financing &amp; earned-wage access</td>
+              <td>Emergency credit against insurance</td>
+              <td>Study Now, Pay Later (SNPL)</td>
+              <td>Capital Accelerator</td>
+            </tr>
+            <tr>
+              <td class="highlight">Risk protection</td>
+              <td class="muted">None</td>
+              <td class="hl-col">Income stabilizer</td>
+              <td>Migration risk insurance</td>
+              <td>Beat Inflation Lock</td>
+              <td>Contextual Businesss Finance</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRODUCT ECOSYSTEM ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Product ecosystem</div>
+        <h2>Five platform layers, one behavioral core.</h2>
+      </div>
+
+      <div class="grid g2 reveal" style="align-items:start;">
+        <div class="grid" style="gap:22px;">
+          <div style="display:flex; gap:16px;">
+            <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 1116 0 8 8 0 01-16 0z" stroke="var(--teal)" stroke-width="1.6"/><path d="M12 8v4l3 2" stroke="var(--teal)" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+            <div><h4 style="font-family:'Public Sans'; font-weight:700; font-size:16px; margin-bottom:5px;">Community-specific alternative credit scoring</h4><p style="color:var(--ink-soft); font-size:14.5px;">A fully behavioral scoring system built from users' own transactions on the platform, not paperwork.</p></div>
+          </div>
+          <div style="display:flex; gap:16px;">
+            <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 6h18M3 18h18" stroke="var(--teal)" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+            <div><h4 style="font-family:'Public Sans'; font-weight:700; font-size:16px; margin-bottom:5px;">Multi-currency cross-border wallets</h4><p style="color:var(--ink-soft); font-size:14.5px;">Hold, convert and transfer USD, EUR, GBP and more — with FX optimization and cross-border payments.</p></div>
+          </div>
+          <div style="display:flex; gap:16px;">
+            <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke="var(--teal)" stroke-width="1.6"/><path d="M3 10h18" stroke="var(--teal)" stroke-width="1.6"/></svg></div>
+            <div><h4 style="font-family:'Public Sans'; font-weight:700; font-size:16px; margin-bottom:5px;">Multi-currency virtual cards</h4><p style="color:var(--ink-soft); font-size:14.5px;">Cards linked directly to wallet balances for online spending, subscriptions and global merchants.</p></div>
+          </div>
+          <div style="display:flex; gap:16px;">
+            <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.4L12 15.8 7.1 18l.9-5.4-4-3.9L9.5 8 12 3z" stroke="var(--teal)" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
+            <div><h4 style="font-family:'Public Sans'; font-weight:700; font-size:16px; margin-bottom:5px;">Community engagement systems</h4><p style="color:var(--ink-soft); font-size:14.5px;">Family Hero Points, Study Perks and streak-based incentives with gamification built in.</p></div>
+          </div>
+          <div style="display:flex; gap:16px;">
+            <div class="icon-badge"><svg viewBox="0 0 24 24" fill="none"><path d="M4 21V9l8-5 8 5v12" stroke="var(--teal)" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 21v-6h6v6" stroke="var(--teal)" stroke-width="1.6"/></svg></div>
+            <div><h4 style="font-family:'Public Sans'; font-weight:700; font-size:16px; margin-bottom:5px;">Personalized financial ecosystems</h4><p style="color:var(--ink-soft); font-size:14.5px;">Reputation scores, streak badges, income payout manager, smart weekly allowance and local family withdrawals.</p></div>
+          </div>
+        </div>
+
+        <div class="stack">
+          <div class="stack-layer" style="background:var(--gold);"><span class="name">Engagement &amp; rewards</span><span>Layer 5</span></div>
+          <div class="stack-layer" style="background:#C98A3E;"><span class="name">Insurance &amp; protection</span><span>Layer 4</span></div>
+          <div class="stack-layer" style="background:var(--teal);"><span class="name">Community intelligence</span><span>Layer 3</span></div>
+          <div class="stack-layer" style="background:#3D5652;"><span class="name">Risk &amp; scoring</span><span>Layer 2</span></div>
+          <div class="stack-layer" style="background:var(--umber);"><span class="name">Payments layer</span><span>Layer 1</span></div>
+          <div class="stack-layer" style="background:var(--umber-dark);"><span class="name">Banking infrastructure</span><span>Layer 0</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SEGMENTS / TABS ============ -->
+  <section class="section alt-bg" id="segments">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Tailored products</div>
+        <h2>What each community actually gets.</h2>
+        <p>Every product below solves one concrete cash-flow problem for that community, with a specific mechanic — not a generic feature.</p>
+      </div>
+
+      <div class="tabbar reveal">
+        <button class="tab-btn active" data-tab="freelancers">Freelancers</button>
+        <button class="tab-btn" data-tab="migrants">Immigrant workers</button>
+        <button class="tab-btn" data-tab="students">Students &amp; Gen Z</button>
+        <button class="tab-btn" data-tab="business">Online Businesses &amp; SMEs</button>
+      </div>
+
+      <div class="tab-panel g3 grid active" data-panel="freelancers">
+        <div class="prod-card">
+          <span class="tag">Income stabilizer</span>
+          <h4>Income Stabilizer</h4>
+          <p>A time-triggered safety net for the silence between clients.</p>
+          <span class="lbl">Mechanic</span>
+          <p>Builds a 3-month ring-fenced retainer that unlocks only once the platform detects a 30+ day pipeline collapse.</p>
+        </div>
+        <div class="prod-card">
+          <span class="tag">FX protection</span>
+          <h4>USD Earning Stability Lock</h4>
+          <p>Protects against currency volatility eroding purchasing power.</p>
+          <span class="lbl">Mechanic</span>
+          <p>Locks earnings in USD at a growth rate, auto-converting only when the home-currency exchange rate is optimal.</p>
+        </div>
+        <div class="prod-card">
+          <span class="tag">Financing</span>
+          <h4>Invoice Financing</h4>
+          <p>Solves immediate cash-flow gaps between finishing work and getting paid.</p>
+          <span class="lbl">Mechanic</span>
+          <p>Borrow up to 80% against a verified but unpaid invoice — no fixed EMI, repays automatically when the invoice clears.</p>
+        </div>
+      </div>
+
+      <div class="tab-panel g3 grid" data-panel="migrants">
+        <div class="prod-card">
+          <span class="tag">Insurance</span>
+          <h4>Migration Risk Insurance</h4>
+          <p>Coverage for job loss abroad, deportation, unpaid salaries and employer abuse.</p>
+          <span class="lbl">Insight</span>
+          <p>Protects against the exact risks traditional insurance completely ignores.</p>
+        </div>
+        <div class="prod-card">
+          <span class="tag">Credit</span>
+          <h4>Family Emergency Credit</h4>
+          <p>Instant home-country credit disbursed to the family in minutes.</p>
+          <span class="lbl">Underwriting</span>
+          <p>Approved solely on the migrant worker's remittance track record, circumventing the family's lack of local credit history.</p>
+        </div>
+        <div class="prod-card">
+          <span class="tag">Wealth building</span>
+          <h4>Retirement Return Fund</h4>
+          <p>A personal wealth builder, kept separate from family remittances.</p>
+          <span class="lbl">Mechanic</span>
+          <p>Triggered by work-anniversary milestones, designed strictly for the worker's survival after returning home permanently.</p>
+        </div>
+      </div>
+
+      <div class="tab-panel g3 grid" data-panel="students">
+        <div class="prod-card">
+          <span class="tag">Gamified savings</span>
+          <h4>Level Up Money Plan</h4>
+          <p>Five deposit increases unlock five levels, each with a cash reward.</p>
+          <span class="lbl">Mechanic</span>
+          <p>Missing a savings goal costs a life and drops a level — each level upgrade also unlocks new SNPL perks.</p>
+        </div>
+        <div class="prod-card">
+          <span class="tag">Inflation hedge</span>
+          <h4>Beat Inflation Lock</h4>
+          <p>An 8% deposit rate designed to outpace the live inflation rate over time.</p>
+          <span class="lbl">Mechanic</span>
+          <p>1, 6 and 12-month streaks unlock badges; cancelling early incurs a small fee and drops the streak.</p>
+        </div>
+        <div class="prod-card">
+          <span class="tag">Study financing</span>
+          <h4>Study Now, Pay Later</h4>
+          <p>Covers tuition, exam fees, skill bootcamps and equipment instantly.</p>
+          <span class="lbl">Smart feature</span>
+          <p>A Career ROI Tracker weighs course cost against expected salary bump to estimate real payback period.</p>
+        </div>
+      </div>
+
+      <div class="tab-panel g3 grid" data-panel="business">
+        <div class="prod-card">
+          <span class="tag">Revenue-based</span>
+          <h4>Contextual Business Financing</h4>
+          <p>Inventory, payroll, invoice, supplier, equipment, marketing and tax financing — one dynamic limit.</p>
+          <span class="lbl">Mechanic</span>
+          <p>Repayment scales with revenue: higher sales months mean higher repayment, lower months mean lower — no fixed EMIs.</p>
+        </div>
+        <div class="prod-card">
+          <span class="tag">Idle capital</span>
+          <h4>Idle Capital Accelerator</h4>
+          <p>Turns excess operating cash sitting idle into passive business income.</p>
+          <span class="lbl">Mechanic</span>
+          <p>Predicts major hits — payroll, supplier bills, taxes — and auto-releases exact funds before each payment date.</p>
+        </div>
+        <div class="prod-card">
+          <span class="tag">Risk protection</span>
+          <h4>Financial Risk Protection</h4>
+          <p>Payroll protection, revenue-drop shield, tax vault and supplier payment guarantees in one layer.</p>
+          <span class="lbl">Mechanic</span>
+          <p>Vaults auto-lock a percentage of revenue and release on trigger events — a 30% revenue dip, a tax season, a missed payment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WIRESCORE ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Alternative credit scoring</div>
+        <h2>WireScore — credit built from behavior, not paperwork.</h2>
+      </div>
+
+      <div class="score-wrap reveal">
+        <div class="score-inputs">
+          <div class="score-input">Transaction history</div>
+          <div class="score-input">Wallets, cards, P2P behavior</div>
+          <div class="score-input">Savings &amp; growth discipline</div>
+          <div class="score-input">Repayment behavior</div>
+          <div class="score-input">Cash-flow volume</div>
+        </div>
+        <div class="hexcore">
+          <svg viewBox="0 0 100 100"><polygon points="50,4 92,27 92,73 50,96 8,73 8,27" fill="none" stroke="var(--umber)" stroke-width="3"/></svg>
+          <div class="lbl">WireScore</div>
+        </div>
+        <div class="score-output">
+          <p>🔔 <b>System detects:</b> revenue increased 30% over the last 3 months.</p>
+          <p style="margin-top:10px;"><b>System proactively suggests</b> a $7,500 inventory financing line.</p>
+        </div>
+      </div>
+
+      <div class="reveal" style="margin-top:26px; background:var(--paper-alt); border:1px solid var(--line); border-radius:14px; padding:20px 26px; display:flex; flex-wrap:wrap; align-items:center; gap:14px; justify-content:center; font-family:'IBM Plex Mono'; font-size:13px; text-transform:uppercase; letter-spacing:.04em;">
+        <span>Responsible behavior unlocks</span>
+        <span style="color:var(--gold-ink);">→ Higher limits</span>
+        <span style="color:var(--gold-ink);">→ Better rates</span>
+        <span style="color:var(--gold-ink);">→ Faster approvals</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ============ ROADMAP ============ -->
+  <section class="section" id="roadmap">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Roadmap</div>
+        <h2>The next six months.</h2>
+        <p>A real, dated build sequence — not a placeholder timeline. We're currently in month one.</p>
+      </div>
+
+      <div class="roadmap reveal">
+        <div class="rm-row current">
+          <div class="rm-month">Jul</div>
+          <div><div class="rm-focus">Core platform development & Team Expansion</div><span class="rm-badge">In progress</span></div>
+          <div class="rm-milestone">Onboarding Co-founder and CTO, <br> Developed 40% of the core platform</div>
+        </div>
+        <div class="rm-row">
+          <div class="rm-month">Aug</div>
+        <div><div class="rm-focus">Core platform development</div><span class="rm-badge">In progress</span></div>
+          <div class="rm-milestone">Authentication, wallet, dashboard</div>
+        </div>
+        <div class="rm-row">
+          <div class="rm-month">Sep</div>
+          <div class="rm-focus">Financial features</div>
+          <div class="rm-milestone">Transfers, multi-currency wallet, virtual cards</div>
+        </div>
+        <div class="rm-row">
+          <div class="rm-month">Oct</div>
+          <div class="rm-focus">Community products</div>
+          <div class="rm-milestone">Freelancer &amp; student modules, closed beta</div>
+        </div>
+        <div class="rm-row">
+          <div class="rm-month">Nov</div>
+          <div class="rm-focus">Pilot launch</div>
+          <div class="rm-milestone">Early users, product validation</div>
+        </div>
+        <div class="rm-row">
+          <div class="rm-month">Dec</div>
+          <div class="rm-focus">Optimization &amp; fundraising</div>
+          <div class="rm-milestone">Investor-ready MVP, partnership pipeline</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TEAM ============ -->
+  <section class="section alt-bg" id="team">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">Team</div>
+        <h2>Built solo so far. Built to grow with the right people.</h2>
+        <p>WireBlack's founder studies Banking &amp; Insurance at the University of Dhaka and has worked as a freelancer and web developer — the market this product is built for. Substantial groundwork is done: market research, product architecture, business model and community-specific product design, all built in-house.</p>
+      </div>
+
+      <div class="team-grid reveal" style="margin-bottom:22px;">
+        <div class="team-card">
+          <div class="avatar"><img src="bismoy.jpeg" alt="Bismoy Saha"></div>
+          <h4>Bismoy Saha</h4>
+          <span class="role">Founder &amp; CEO</span>
+          <p>Web developer on Fiverr; studies Banking &amp; Insurance, FBS, University of Dhaka. Native understanding of Gen Z, freelancer and digital community behavior.</p>
+        </div>
+        <div class="team-card">
+          <div class="avatar"><img src="rafi.jpg" alt="Rafidul Islam"></div>
+          <h4>Rafidul Islam</h4>
+          <span class="role">Team creative</span>
+          <p>Graphics designer on Fiverr, shaping WireBlack's visual identity and product design language.</p>
+        </div>
+        <div class="team-card">
+          <div class="avatar"><img src="oti.jpeg" alt="Fabliha Naheen"></div>
+          <h4>Fabliha Naheen</h4>
+          <span class="role">Marketing &amp; growth</span>
+          <p>Studies Human Resource Management, University of Chittagong — driving early growth and community partnerships.</p>
+        </div>
+      </div>
+
+      <h3 style="font-family:'Public Sans'; font-weight:700; font-size:18px; margin-bottom:16px;">Open roles — help us build this</h3>
+      <div class="grid g3 reveal">
+        <div class="open-role">
+          <span class="role mono">Most wanted Role</span>
+          <h4>Co-Founder &amp; CTO</h4>
+          <p style="color:var(--ink-soft); font-size:14px; margin-top:8px;">Own full-stack development, mobile, technical architecture and security as we move from prototype to MVP.</p>
+        </div>
+        <div class="open-role">
+          <span class="role mono">Open</span>
+          <h4>Co-Founder &amp; CFO</h4>
+          <p style="color:var(--ink-soft); font-size:14px; margin-top:8px;">Financial planning, budget management, revenue forecasting, unit economics and investor reporting.</p>
+        </div>
+        <div class="open-role">
+          <span class="role mono">Open</span>
+          <h4>Business Operations</h4>
+          <p style="color:var(--ink-soft); font-size:14px; margin-top:8px;">Growth, marketing, community partnerships and customer success as we head into pilot launch.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- ============ FOUNDER CTA ============ -->
+  <section class="section">
+    <div class="wrap">
+      <div class="founder-cta reveal">
+        <div>
+          <h3>This page exists because we're looking for you.</h3>
+          <p>WireBlack is building toward an MVP with a first target of 1,000 customers and a infrastructure and early customer acquisition. If you're a technical co-founder, or think we can work together, we should talk about the product in detail.</p>
+        </div>
+        <div class="founder-contact">
+          <p class="who">Bismoy Saha</p>
+          <p style="color:var(--ink-soft); font-size:13.5px; margin-bottom:10px;">Founder &amp; CEO, WireBlack</p>
+          <a href="https://www.linkedin.com/in/bismoysaha/" class="mail"><img src="https://static.vecteezy.com/system/resources/thumbnails/023/986/926/small/linkedin-logo-linkedin-logo-transparent-linkedin-icon-transparent-free-free-png.png" alt="LinkedIn" style="height:20px; width:20px;"> LinkedIn</a>
+          <div style="margin-top:18px;"><a href="mailto:badancoder@hotmail.com" class="btn btn-primary" style="width:100%; justify-content:center;">Email the founder →</a></div>
+          <div style="margin-top:18px;"><a href="https://forms.gle/X4Qy6wqgwoLbwtXa9" class="btn btn-primary" style="width:100%; justify-content:center;">Join Us →</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ CLOSING ============ 
+<footer class="closing">
+  <div class="wrap">
+    <div class="eyebrow" style="color:#E3B36A;">Beyond banking</div>
+    <h2>We no longer provide just money.</h2>
+    <p class="lead">We provide the timing, the purpose and the intelligence to make every dollar work exactly when it's needed most. Modern economies have evolved — it's time banking did the same.</p>
+    <div class="hero-cta">
+      <a href="mailto:badancoder@hotmail.com" class="btn btn-primary">Get in touch →</a>
+      <a href="#top" class="btn btn-ghost">Back to top</a>
+    </div>
+
+    <div class="closing-foot">
+      <span>WIREBLACK © 2026 — NEXT-GEN BANKING FOR FREELANCERS, STUDENTS, GEN Z, IMMIGRANTS &amp; BUSINESSES</span>
+      <span>STATIC PREVIEW SITE · PRODUCT UNDER ACTIVE DEVELOPMENT</span>
+    </div>
+  </div>
+</footer> -->
+
+<script>
+  // mobile nav
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // tabs
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tab = btn.dataset.tab;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector(`.tab-panel[data-panel="${tab}"]`).classList.add('active');
+    });
+  });
+
+  // scroll reveal
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
