@@ -496,21 +496,48 @@
     .team-grid{grid-template-columns:1fr 1fr;}
   }
   @media (max-width:760px){
-    .wrap{padding:0 20px;}
+    .wrap{padding:0 18px;}
+    header.nav{background:rgba(250,246,239,.96);}
+    .nav-inner{flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; padding:10px 0;}
     nav.links{
-      position:fixed; inset:60px 0 0 0; background:var(--paper); flex-direction:column;
-      align-items:flex-start; padding:28px 24px; gap:22px; transform:translateX(100%);
-      transition:transform .25s ease; overflow-y:auto;
+      position:fixed; top:60px; left:0; right:0; bottom:0;
+      width:100%; max-height:calc(100vh - 60px);
+      background:rgba(250,246,239,.98); backdrop-filter:blur(16px);
+      display:flex; flex-direction:column; align-items:flex-start;
+      justify-content:flex-start; padding:28px 24px 30px;
+      gap:18px; transform:translateX(100%);
+      opacity:0; visibility:hidden;
+      transition:transform .25s ease, opacity .25s ease, visibility .25s ease;
+      overflow-y:auto; z-index:95;
     }
-    nav.links.open{transform:translateX(0);}
-    nav.links a{font-size:15px;}
-    .nav-toggle{display:block;}
+    nav.links.open{transform:translateX(0); opacity:1; visibility:visible;}
+    nav.links a{font-size:15px; width:100%; padding:10px 0; color:var(--ink-soft);}
+    nav.links a.nav-cta{display:inline-flex; width:auto; padding:11px 16px; margin-top:8px;}
+    .nav-toggle{display:flex; align-items:center; justify-content:center; width:44px; height:44px; background:var(--card); border-radius:999px; border:1px solid var(--line); box-shadow:0 10px 24px rgba(32,22,19,.08); position:relative; z-index:100;}
     .g2, .g3, .g4{grid-template-columns:1fr;}
+    .hero-grid{grid-template-columns:1fr; gap:28px;}
+    .hero-badges{justify-content:flex-start;}
+    .hero-cta{flex-direction:column; align-items:stretch;}
+    .hero-cta .btn{width:100%; justify-content:center;}
+    .tabbar{gap:10px; overflow-x:auto; padding-bottom:6px;}
+    .tab-btn{flex:1 1 auto; min-width:140px;}
     .pillars{flex-direction:column;}
     .pillar{border-radius:10px;}
-    .rm-row{grid-template-columns:1fr; gap:6px;}
+    .rm-row{grid-template-columns:1fr; gap:16px;}
+    .build-cycle-card{grid-template-columns:1fr !important; padding:24px 20px !important;}
+    .build-cycle-card > div{min-width:0;}
     .team-grid{grid-template-columns:1fr;}
-    .score-inputs{order:2;}
+    .score-wrap{grid-template-columns:1fr; gap:18px;}
+    .status-bar{font-size:12px; padding:8px 12px;}
+    .section-head{margin-bottom:32px;}
+    .section-head h2{font-size:clamp(26px,6vw,36px);}
+    .card{padding:20px;}
+    .prod-card{padding:22px;}
+    .tbl-wrap{overflow-x:auto;}
+    table th, table td{white-space:normal;}
+    .score-input{font-size:13px;}
+    .team-card{padding:20px;}
+    .founder-cta{grid-template-columns:1fr; gap:24px;}
   }
 </style>
 </head>
@@ -599,7 +626,7 @@
   <!-- ============ STATUS / HONESTY BAND ============ -->
   <section class="section tight reveal">
     <div class="wrap">
-      <div class="card" style="padding:36px 40px; display:grid; grid-template-columns:1.1fr .9fr; gap:36px; align-items:center;">
+      <div class="card build-cycle-card" style="padding:36px 40px; display:grid; grid-template-columns:1.1fr .9fr; gap:36px; align-items:center;">
         <div>
           <h3 style="font-family:'Public Sans'; font-weight:700; font-size:20px; margin-bottom:10px;">Our product is not yet developed</h3>
           <p style="color:var(--ink-soft); font-size:15px;">WireBlack is being built in-house, one founder and a small team, in public view. We have already made significant progress. and we can build the complete product. without external help. What follows is the real architecture, research and roadmap behind the build, shared here so a technical or financial co-founder can evaluate it honestly.</p>
