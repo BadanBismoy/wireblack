@@ -137,6 +137,7 @@
   }
   .nav-toggle{display:none; background:none; border:0; cursor:pointer; padding:4px;}
   .nav-toggle span{display:block; width:22px; height:2px; background:var(--ink); margin:5px 0;}
+  .nav-cta-mobile{display:none;}
 
   /* ---------- badges / pills ---------- */
   .pill{
@@ -500,20 +501,16 @@
     header.nav{background:rgba(250,246,239,.96);}
     .nav-inner{flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; padding:10px 0;}
     nav.links{
-      position:fixed; top:60px; left:0; right:0; bottom:0;
-      width:100%; max-height:calc(100vh - 60px);
-      background:rgba(250,246,239,.98); backdrop-filter:blur(16px);
-      display:flex; flex-direction:column; align-items:flex-start;
-      justify-content:flex-start; padding:28px 24px 30px;
-      gap:18px; transform:translateX(100%);
-      opacity:0; visibility:hidden;
-      transition:transform .25s ease, opacity .25s ease, visibility .25s ease;
-      overflow-y:auto; z-index:95;
+      display:none !important;
     }
-    nav.links.open{transform:translateX(0); opacity:1; visibility:visible;}
+    .nav-toggle{display:none;}
+    .nav-cta-mobile{display:inline-flex;}
     nav.links a{font-size:15px; width:100%; padding:10px 0; color:var(--ink-soft);}
     nav.links a.nav-cta{display:inline-flex; width:auto; padding:11px 16px; margin-top:8px;}
-    .nav-toggle{display:flex; align-items:center; justify-content:center; width:44px; height:44px; background:var(--card); border-radius:999px; border:1px solid var(--line); box-shadow:0 10px 24px rgba(32,22,19,.08); position:relative; z-index:100;}
+    .nav-cta-mobile{font-family:'IBM Plex Mono', monospace;
+      font-size:12px; text-transform:uppercase; letter-spacing:.05em;
+      background:var(--ink); color:var(--paper)!important; padding:9px 16px; border-radius:100px; text-decoration:none; white-space:nowrap;
+    }
     .g2, .g3, .g4{grid-template-columns:1fr;}
     .hero-grid{grid-template-columns:1fr; gap:28px;}
     .hero-badges{justify-content:flex-start;}
@@ -561,6 +558,7 @@
       <a href="#team">Team & Open Roles</a>
       <a href="https://forms.gle/X4Qy6wqgwoLbwtXa9" class="nav-cta">Join us →</a>
     </nav>
+    <a href="https://forms.gle/X4Qy6wqgwoLbwtXa9" class="nav-cta nav-cta-mobile">Join us →</a>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
   </div>
 </header>
